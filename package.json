@@ -17,10 +17,7 @@
     "@fortawesome/fontawesome-free-brands": "^5.0.11",
     "@fortawesome/fontawesome-free-solid": "^5.0.11",
     "@fortawesome/vue-fontawesome": "^0.0.22",
-    "geopattern": "^1.2.3",
-    "moment": "^2.22.1",
     "vuepress": "^0.8.4",
-    "vuepress-theme-meteorlxy": "^0.1.0",
-    "vuepress-theme-vue": "^1.0.2"
+    "vuepress-theme-meteorlxy": "^0.1.0"
   }
 }
