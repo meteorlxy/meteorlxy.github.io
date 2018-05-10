@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   name: 'TheHeaderBanner'
 }
