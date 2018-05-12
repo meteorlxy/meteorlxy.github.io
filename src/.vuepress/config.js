@@ -5,7 +5,7 @@ module.exports = {
   title: 'Meteorlxy',
   description: 'meteorlxy\'s homepage',
   head: [
-    ['link', { rel: 'icon', href: `/favicon.ico` }],
+    ['link', { rel: 'icon', href: '/assets/img/avator.jpg' }],
   ],
   locales: {
     '/': {
