@@ -63,6 +63,11 @@ module.exports = {
       { text: 'About', link: '/about/', exact: false  }, 
     ]
   },
+  markdown: {
+    toc: {
+      includeLevel: [2, 3, 4]
+    }
+  },
   chainWebpack: (config, isServer) => {
     if (!isServer) {
       config.resolve
