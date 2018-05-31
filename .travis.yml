@@ -1,5 +1,7 @@
 language: node_js
 node_js: stable
+git:
+  depth: false
 branches:
   only:
     - src
