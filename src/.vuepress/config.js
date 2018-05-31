@@ -1,5 +1,4 @@
 const webpack = require('webpack')
-const path = require('path')
 
 module.exports = {
   title: 'Meteorlxy',
@@ -69,11 +68,7 @@ module.exports = {
     }
   },
   chainWebpack: (config, isServer) => {
-    if (!isServer) {
-      config.resolve
-        .modules
-          .add(path.resolve(__dirname, '../../node_modules'))
-
+    if (isServer === false) {
       config.node.set('Buffer', false)
 
       config
