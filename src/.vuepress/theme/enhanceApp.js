@@ -10,7 +10,8 @@ const dataMixin = {
       const pageSort = (p1, p2) => {
         return p1.frontmatter.date < p2.frontmatter.date
       }
-      return pages.filter(pageFilter).sort(pageSort)
+      const posts = pages.filter(pageFilter).sort(pageSort)
+      return posts
     },
     $tags () {
       let tagsArr = []
@@ -22,8 +23,9 @@ const dataMixin = {
   }
 }
 
-export default ({ Vue }) => {
+export default ({ Vue, options }) => {
   Vue.mixin(dataMixin)
+
   Vue.component('FontAwesomeIcon', {
     functional: true,
     props: FontAwesomeIcon.props,

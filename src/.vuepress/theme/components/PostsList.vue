@@ -13,7 +13,9 @@
           class="post-link">
           <h3 class="post-title">{{ post.title }}</h3>
 
-          <p class="post-desc">{{ post.frontmatter.description || '' }}</p>
+          <p
+            class="post-excerpt"
+            v-html="post.excerpt || post.frontmatter.description || ''"></p>
         </router-link>
 
         <p
@@ -64,7 +66,7 @@ export default {
       .post-title
         color $textColor
         transition all 0.2s
-      .post-desc
+      .post-excerpt
         color: $grayTextColor
         text-align justify
       &:hover

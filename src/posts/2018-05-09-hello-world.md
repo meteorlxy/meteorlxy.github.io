@@ -4,21 +4,22 @@ category:
 tags:
   - essay
 title: 'Hello, World!'
-description: '终于用 Vuepress 搭起来了个人主页啦'
+description: 'The first post of my blog'
 date: 2018-05-09
 ---
 
+
 自从学了Vue之后，jQuery就不说了，连正经的HTML都不想写了，所以连Blog也想用Vue搭。
 
-常用的博客框架如Jekyll、Hexo等，都有自己的一套模板系统，强行使用Vue的话，两边的功能和特点都不能完全发挥。（直接用一套别人的主题其实也可以，但是不乐意:sweat_smile:）
+常用的博客框架如Jekyll、Hexo等，都有自己的一套模板系统，强行使用Vue的话，两边的功能和特点都不能完全发挥。（直接用一套别人的主题其实也可以，但是不太乐意，搞前端的不自己写主题总感觉少了点什么哈哈。）
 
 Nuxt是一个较为成熟的SSR框架，比较适合做应用，用来写Blog还是有点太重量级了。
 
-后来在做学校镜像站前端的时候，也遇到了这个问题，像TUNA他们用的就是Jekyll。在Jekyll, Hexo, Nuxt之间纠结了很久，觉得都不太适合，于是我就在[vue-cli][vue-cli]的[webpack template][webpack template]的基础上做了一些修改，作为镜像站网站的解决方案。
+<!-- more -->
 
-<br/>
+后来在做学校镜像站前端的时候，也遇到了这个问题，像TUNA他们用的就是Jekyll。后来我是在[vue-cli][vue-cli]的[webpack template][webpack template]的基础上做了一些修改，作为镜像站网站的解决方案。
 
-然后某一天，在看[Github Trending][trending]的时候，突然发现了
+然后某一天，在看[Github Trending][trending]的时候，突然发现了VuePress！
 
 > **[Vuepress][vuepress] - Vue-powered static site generator**
 
@@ -49,3 +50,4 @@ Nuxt是一个较为成熟的SSR框架，比较适合做应用，用来写Blog还
 [trending]: <https://github.com/trending>  "Github Trending"
 [vue-cli]: <https://github.com/vuejs/vue-cli>  "vue-cli"
 [webpack template]: <https://github.com/vuejs-templates/webpack>  "vue-webpack-template"
+

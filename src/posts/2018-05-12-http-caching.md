@@ -8,6 +8,10 @@ description: 'Note about HTTP Caching. 关于HTTP缓存的相关内容整理'
 date: 2018-05-12
 ---
 
+缓存对于前端性能优化等方面都有着重要意义。这篇把HTTP缓存相关的知识点总在这里，部分内容自己重新描述了一下，加深理解。
+
+<!-- more -->
+
 ::: warning TODOS
 - RFC2616 Capter 13: Caching in HTTP
 :::
@@ -404,14 +408,15 @@ expiration_time = response_time + freshness_lifetime - current_age
 - [HTTP ETag - WikiPedia](https://en.wikipedia.org/wiki/HTTP_ETag)
 - [web性能优化之：no-cache与must-revalidate深入探究](https://www.cnblogs.com/chyingp/p/no-cache-vs-must-revalidate.html)
 
----
 
 ## 写在后面
 
 研二快结束了，这一两个月在找暑期实习。
 
-在面腾讯SNG前端的时候，对缓存这部分好像挺重视的。但是当时还没怎么好好看过这部分内容，基本没答上什么，二面面试官就让我趁这两个月回去好好看看。听这话的意思好像是在说我已经稳了，但是没想到HR面之后已经过了一个月，还是没有任何消息，然而很多同学半个月前就已经拿到Offer了。
+在面腾讯SNG前端的时候，对缓存这部分好像挺重视的。但是当时还没怎么好好看过这部分内容，基本没答上什么，二面面试官就让我趁这两个月回去好好看看。（听这话的意思好像是在说我已经稳了，但是没想到HR面之后已经过了一个月，还是没有任何消息……好慌:sweat_smile:）
 
 实习的事先不论，想好好做前端的话，这些该补的还是要补上。
 
-这篇把缓存相关的知识点总在这里，部分内容自己重新描述了一下，加深理解。
+----update20180601
+
+拿到腾讯SNG的前端实习offer啦，下个月去深圳实习~
