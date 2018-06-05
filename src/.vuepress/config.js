@@ -18,6 +18,7 @@ module.exports = {
       description: 'Happy Coding<br/>Happy Life',
       email: 'meteor.lxy@foxmail.com',
       location: 'Xi\'an City, China',
+      organization: 'Xi\'an Jiao Tong University',
       avator: '/assets/img/avator.jpg',
       sns: {
         facebook: {

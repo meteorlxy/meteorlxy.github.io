@@ -1,10 +1,10 @@
 ---
 layout: post
-category: 
+category: Development
 tags:
   - http
 title: 'HTTP Caching - HTTP 缓存'
-description: 'Note about HTTP Caching. 关于HTTP缓存的相关内容整理'
+description: 'Note about HTTP Caching - 关于HTTP缓存的相关内容整理'
 date: 2018-05-12
 ---
 
