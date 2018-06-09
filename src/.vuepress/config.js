@@ -11,7 +11,7 @@ module.exports = {
       lang: 'zh-CN',
     },
   },
-  // theme: 'meteorlxy',
+  theme: 'meteorlxy',
   themeConfig: {
     personalInfo: {
       nickname: 'meteorlxy',
