@@ -6,11 +6,7 @@ My Homepage Repo
 
 Powered by [Vuepress](https://vuepress.vuejs.org/)
 
-## TODOS
-
-- [ ] Comments Support
-- [ ] SEO
-- [ ] Theme enhancement
+Themed by [vuepress-theme-meteorlxy](https://github.com/meteorlxy/vuepress-theme-meteorlxy)
 
 ## Develop
 
