@@ -1,5 +1,3 @@
-const webpack = require('webpack')
-
 module.exports = {
   title: 'Meteorlxy',
   description: 'meteorlxy\'s homepage',
