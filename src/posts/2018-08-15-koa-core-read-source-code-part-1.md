@@ -4,14 +4,16 @@ category: Development
 tags:
   - js
   - koa
-title: '源码阅读 - Koa Core'
-description: 'Read and learn the source code of koa core'
+title: 'Koa Core - 源码阅读 1 - Application'
+description: 'Read and learn the source code of koa core. Part 1: Application'
 date: 2018-08-15
 ---
 
 阅读学习Koa Core源码，基于koa v2.5.2。
 
 Koa的核心代码很少，就四个文件`application`, `context`, `request`, `response`，算上注释和空行目前也还没过2000行代码。
+
+这一篇针对`application`的源码进行阅读学习。
 
 <!-- more -->
 
@@ -24,7 +26,7 @@ Koa的核心代码很少，就四个文件`application`, `context`, `request`, `
 - `lib/request`
 - `lib/response`
 
-主要这四个文件，当然也还依赖了很多外部库，以及koa的其他仓库。
+主要这四个文件，当然也还依赖了很多外部库，以及koa的其他仓库。这一篇看第一部分`lib/application`。
 
 [[toc]]
 
@@ -457,12 +459,6 @@ inspect() {
 打印`app`时的方法。
 
 `only`就是通过白名单的方式，过滤掉对象中的多余属性，返回一个只包含相应属性的新对象。
-
-## Context [TODO]
-
-## Request [TODO]
-
-## Response [TODO]
 
 ## References
 
