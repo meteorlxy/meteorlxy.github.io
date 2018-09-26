@@ -19,7 +19,7 @@ Koa的核心代码很少，就四个文件`application`, `context`, `request`, `
 
 # Koa Core
 
-[koajs/koa](https://github.com/koajs/koa)
+[koajs/koa](https://github.com/koajs/koa/tree/2.5.2)
 
 - `lib/application`
 - `lib/context`
@@ -57,7 +57,9 @@ app.listen(3000)
 
 ```
 
-### Application类的声明与构造函数
+---
+
+### constructor()
 
 ```js
 // @see https://nodejs.org/dist/latest-v10.x/docs/api/events.html#events_class_eventemitter
@@ -127,12 +129,9 @@ node v6.6.0+ 增加了自定义`inspect`函数，deprecate了原本的`inspect()
 所以最上面写的`requires node v7.6.0 or higher`并不是真的"require"，大概是为了和node的LTS版本对齐？但是截止现在(2018-08-15)，node 4.x, 7.x 9.x都已经处于`end-of-life`状态了([参考这里](https://github.com/nodejs/Release#end-of-life-releases))，按理说应该需要排除掉了才对:sweat_smile:。
 :::
 
+---
 
-### Application类的方法
-
-不按照源码顺序放了，大致按照`Hello, world`中的使用顺序来写。
-
-#### use()
+### use()
 
 ```js
 // @see https://github.com/visionmedia/debug
@@ -177,7 +176,9 @@ koa默认支持通过`debug`进行调试，只需要启动时增加环境变量`
 
 `use()`支持链式调用，所以最后返回的是`this`。
 
-#### listen()
+---
+
+### listen()
 
 ```js
 const http = require('http');
@@ -206,7 +207,9 @@ listen(...args) {
 
 `this.callback()`作为`requestHandler`传入，监听`request`事件 - [文档](https://nodejs.org/dist/latest-v10.x/docs/api/http.html#http_http_createserver_options_requestlistener)。
 
-#### callback()
+---
+
+### callback()
 
 ```js
 const compose = require('koa-compose');
@@ -242,7 +245,9 @@ callback() {
 
 通过`this.createContext()`方法新建上下文，作为后续整个`middleware`链中的`ctx`。因为每个请求都要有独立的`context`，所以每次处理请求时都要新创建一个。
 
-#### handleRequest()
+---
+
+### handleRequest()
 
 ```js
 const onFinished = require('on-finished');
@@ -275,7 +280,9 @@ handleRequest(ctx, fnMiddleware) {
 
 `fnMiddleware(ctx)`传入`ctx`，将所有注册的`middleware`执行一遍，最后最处理完成的`ctx`执行`respond`方法，生成响应返回给客户端。
 
-#### respond()
+---
+
+### respond()
 
 其实这个`respond()`方法并不是`Application`类的方法，是写在类外的一个`helper`函数。
 
@@ -340,7 +347,9 @@ function respond(ctx) {
 
 后面则是对响应的body进行判断和处理，如果不是`string`, `Buffer`, `Stream`等类型，则默认`JSON.stringify`处理后返回。
 
-#### createContext()
+---
+
+### createContext()
 
 ```js
 /**
@@ -390,7 +399,9 @@ createContext(req, res) {
 ```
 :::
 
-#### onerror()
+---
+
+### onerror()
 
 ```js
 // ...
@@ -420,7 +431,9 @@ onerror(err) {
 
 `handleRequest()`里面对应的响应的`onerror`是在`context`下实现的。
 
-#### toJSON(), inspect()
+---
+
+### toJSON(), inspect()
 
 ```js
 const only = require('only');
@@ -463,3 +476,8 @@ inspect() {
 ## References
 
 - [koajs/koa v2.5.2](https://github.com/koajs/koa/tree/2.5.2)
+
+## Related posts
+
+> Koa源码阅读：  
+> [Koa Core - 源码阅读 2 - Context](./2018-09-26-koa-core-read-source-code-part-2.md)
