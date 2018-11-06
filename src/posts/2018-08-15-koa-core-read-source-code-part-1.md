@@ -109,26 +109,6 @@ constructor() {
 
 node v6.6.0+ 增加了自定义`inspect`函数，deprecate了原本的`inspect()`方法。为了支持旧版本node，还保留了`this.inspect`。`util.inspect.custom`将返回一个Symbol，专门用于对应`inspect`方法。预计不再支持旧版node后，会把这里移除，直接用`[util.inspect.custom]`。
 
-::: tip
-其实有点奇怪，Koa的文档写的是：
-
-> Koa requires node v7.6.0 or higher for ES2015 and async function support.
-
-然后后面又写了：
-
-> If you're not using node v7.6+, we recommend setting up babel with babel-preset-env ...
-
-然后`package.json`里面是这么写的：
-
-```json
-"engines": {
-  "node": "^4.8.4 || ^6.10.1 || ^7.10.1 || >= 8.1.4"
-},
-```
-
-所以最上面写的`requires node v7.6.0 or higher`并不是真的"require"，大概是为了和node的LTS版本对齐？但是截止现在(2018-08-15)，node 4.x, 7.x 9.x都已经处于`end-of-life`状态了([参考这里](https://github.com/nodejs/Release#end-of-life-releases))，按理说应该需要排除掉了才对:sweat_smile:。
-:::
-
 ---
 
 ### use()
@@ -480,4 +460,5 @@ inspect() {
 ## Related posts
 
 > Koa源码阅读：  
-> [Koa Core - 源码阅读 2 - Context](./2018-09-26-koa-core-read-source-code-part-2.md)
+> [Koa Core - 源码阅读 2 - Context](./2018-09-26-koa-core-read-source-code-part-2.md)  
+> [Koa Core - 源码阅读 3 - Request & Response](./2018-11-06-koa-core-read-source-code-part-3.md)
