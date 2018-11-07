@@ -5825,10 +5825,10 @@ vuepress-html-webpack-plugin@^3.2.0:
     toposort "^1.0.0"
     util.promisify "1.0.0"
 
-vuepress-theme-meteorlxy@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/vuepress-theme-meteorlxy/-/vuepress-theme-meteorlxy-0.2.4.tgz#65804dbc717a2b05aedc8f0d1e0ad1f3a51f63d0"
-  integrity sha512-wRmdg/7Wmx/NFsrYkrmSZHIp4xIRit/9AD26w33D8ufLNpflaO/WIGjryLIrnRw8foofAo7uJ6LYdlykk8c01g==
+vuepress-theme-meteorlxy@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/vuepress-theme-meteorlxy/-/vuepress-theme-meteorlxy-0.2.6.tgz#f966c06470deb2b2a2f88bedc8596e39aa399a7b"
+  integrity sha512-PcCue336gDUVRSD6KOHolYBjn8p/H4C2eDeMTHfTInEqaYg/75CK3+Vs7OUtG4ITZKRrsGz+T6A24FeM4yoAAQ==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.2"
     "@fortawesome/free-brands-svg-icons" "^5.2.0"
