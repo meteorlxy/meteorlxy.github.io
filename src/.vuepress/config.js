@@ -68,8 +68,6 @@ module.exports = {
   },
   chainWebpack: (config, isServer) => {
     if (isServer === false) {
-      config.node.set('Buffer', false)
-
       config.optimization.splitChunks({
         maxInitialRequests: 5,
         cacheGroups: {
