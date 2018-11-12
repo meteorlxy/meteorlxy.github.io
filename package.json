@@ -5,15 +5,15 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "vuepress dev src",
-    "build": "vuepress build src -d ./dist"
+    "dev": "vuepress dev src --temp ./.temp",
+    "build": "vuepress build src -d ./dist --temp ./.temp"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/meteorlxy/meteorlxy.github.io.git"
   },
   "dependencies": {
-    "vuepress": "^1.0.0-alpha.19",
-    "vuepress-theme-meteorlxy": "^1.0.0-alpha.2"
+    "vuepress": "^1.0.0-alpha.20",
+    "vuepress-theme-meteorlxy": "^1.0.0-alpha.4"
   }
 }
