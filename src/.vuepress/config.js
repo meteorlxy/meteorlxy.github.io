@@ -66,6 +66,13 @@ module.exports = {
       includeLevel: [2, 3, 4]
     }
   },
+
+  plugins: [
+    ['@vuepress/google-analytics', {
+      'ga': 'UA-132770851-1',
+    }],
+  ], 
+
   chainWebpack: (config, isServer) => {
     if (isServer === false) {
       config.optimization.splitChunks({

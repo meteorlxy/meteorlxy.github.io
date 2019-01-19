@@ -1,9 +1,9 @@
 {
+  "private": true,
   "name": "meteorlxy.github.io",
   "description": "My homepage",
   "author": "meteorlxy <meteor.lxy@foxmail.com>",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "dev": "vuepress dev src --temp ./.temp",
     "build": "vuepress build src -d ./dist --temp ./.temp"
@@ -13,7 +13,8 @@
     "url": "git+https://github.com/meteorlxy/meteorlxy.github.io.git"
   },
   "dependencies": {
-    "vuepress": "^1.0.0-alpha.20",
-    "vuepress-theme-meteorlxy": "^1.0.0-alpha.4"
+    "@vuepress/plugin-google-analytics": "^1.0.0-alpha.32",
+    "vuepress": "^1.0.0-alpha.32",
+    "vuepress-theme-meteorlxy": "^1.0.0-alpha.5"
   }
 }
