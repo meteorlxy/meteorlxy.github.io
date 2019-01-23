@@ -2,7 +2,7 @@ module.exports = {
   title: 'Meteorlxy',
   description: 'meteorlxy\'s homepage',
   head: [
-    ['link', { rel: 'icon', href: '/assets/img/avator.jpg' }],
+    ['link', { rel: 'icon', href: '/assets/img/avatar.jpg' }],
   ],
   locales: {
     '/': {
@@ -17,7 +17,7 @@ module.exports = {
       email: 'meteor.lxy@foxmail.com',
       location: 'Xi\'an City, China',
       organization: 'Xi\'an Jiao Tong University',
-      avator: '/assets/img/avator.jpg',
+      avator: '/assets/img/avatar.jpg',
       sns: {
         facebook: {
           account: 'meteorlxy.cn',
