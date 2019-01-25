@@ -6,6 +6,7 @@ tags:
 title: 'HTTP Caching - HTTP 缓存'
 description: 'Note about HTTP Caching - 关于HTTP缓存的相关内容整理'
 date: 2018-05-12
+vssue-title: 'HTTP Caching - HTTP 缓存'
 ---
 
 缓存对于前端性能优化等方面都有着重要意义。这篇把HTTP缓存相关的知识点总在这里，部分内容自己重新描述了一下，加深理解。

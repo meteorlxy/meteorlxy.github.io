@@ -7,6 +7,7 @@ tags:
 title: 'Koa Core - 源码阅读 1 - Application'
 description: 'Read and learn the source code of koa core. Part 1: Application'
 date: 2018-08-15
+vssue-title: 'Koa Core - 源码阅读 1 - Application'
 ---
 
 阅读学习Koa Core源码，基于koa v2.5.2。

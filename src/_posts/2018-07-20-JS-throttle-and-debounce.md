@@ -6,6 +6,7 @@ tags:
 title: 'Throttle and Debounce - 函数节流和去抖小结'
 description: '函数节流和去抖小结'
 date: 2018-07-20
+vssue-title: 'Throttle and Debounce - 函数节流和去抖小结'
 ---
 
 函数节流(Throttle)和去抖(Debounce)是很常用的工具函数，作用相似，但是并不完全相同。
