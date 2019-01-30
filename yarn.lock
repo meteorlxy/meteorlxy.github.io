@@ -913,6 +913,13 @@
   dependencies:
     cross-spawn "^6.0.5"
 
+"@vuepress/plugin-medium-zoom@^1.0.0-alpha.35":
+  version "1.0.0-alpha.35"
+  resolved "https://registry.yarnpkg.com/@vuepress/plugin-medium-zoom/-/plugin-medium-zoom-1.0.0-alpha.35.tgz#3c8610f0f6fec665141bced92a6fbaaf9afa5fbc"
+  integrity sha512-3Ae0FalLXW5NCBBi3YWqu46otBwk5sCmutrPresKqHd5J9FB7IBghruQVpjrirYywZbnHxn5XOyZ8H9Gh4DjXg==
+  dependencies:
+    medium-zoom "^0.4.0"
+
 "@vuepress/plugin-nprogress@^1.0.0-alpha.35":
   version "1.0.0-alpha.35"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-nprogress/-/plugin-nprogress-1.0.0-alpha.35.tgz#8c9dc7b68dc2a2fa03fef4cd0a9b27a206762441"
@@ -4433,6 +4440,11 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
+medium-zoom@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/medium-zoom/-/medium-zoom-0.4.0.tgz#8e13c9b754903c0c903220611af0d3cd373a4222"
+  integrity sha512-0z7yMfd6I1BTCAa8QaR4cp5AqDkQD571GzhHIbbfefKEssGLSvs+4Xai/itOAncm4FBlF5gUoMQ22yW9/f8Sig==
+
 mem@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
@@ -7116,14 +7128,15 @@ vuepress-html-webpack-plugin@^3.2.0:
     toposort "^1.0.0"
     util.promisify "1.0.0"
 
-vuepress-theme-meteorlxy@1.0.0-alpha.8:
-  version "1.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/vuepress-theme-meteorlxy/-/vuepress-theme-meteorlxy-1.0.0-alpha.8.tgz#b024f879c5066a019d05850ae23c6d47ec7289eb"
-  integrity sha512-nZVergwsuPJ2Q7kh5fz4jM1V384FcBKQrWgVsTyf8l/bVS+La+RMPL1VXVPH1ebpAeLnQX8RrHVdcUXFTl6ndg==
+vuepress-theme-meteorlxy@1.0.0-alpha.9:
+  version "1.0.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/vuepress-theme-meteorlxy/-/vuepress-theme-meteorlxy-1.0.0-alpha.9.tgz#4f6dc388dbfa14d31b1ec24d783b4a97e4c5c8f0"
+  integrity sha512-em4sTxabUjIvhZX5q7G9GXVRZh37eXPsMsyiTI3thaQOxm+pTDR1SgsDpwKcplB6cThAoGeV6Tp//pRK5RZ41Q==
   dependencies:
     "@vssue/vuepress-plugin-vssue" "^0.5.1"
     "@vuepress/plugin-back-to-top" "^1.0.0-alpha.35"
     "@vuepress/plugin-blog" "^1.0.0-alpha.35"
+    "@vuepress/plugin-medium-zoom" "^1.0.0-alpha.35"
     "@vuepress/plugin-nprogress" "^1.0.0-alpha.35"
     date-fns "^1.30.1"
     geopattern "^1.2.3"
