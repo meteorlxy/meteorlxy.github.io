@@ -391,5 +391,5 @@ if (util.inspect.custom) {
 ## Related posts
 
 > Koa源码阅读：  
-> [Koa Core - 源码阅读 1 - Application](./2018-08-15-koa-core-read-source-code-part-1.md)  
-> [Koa Core - 源码阅读 3 - Request & Response](./2018-11-06-koa-core-read-source-code-part-3.md)
+> [Koa Core - 源码阅读 1 - Application](/posts/2018/08/15/koa-core-read-source-code-part-1.html)  
+> [Koa Core - 源码阅读 3 - Request & Response](/posts/2018/11/06/koa-core-read-source-code-part-3.html)

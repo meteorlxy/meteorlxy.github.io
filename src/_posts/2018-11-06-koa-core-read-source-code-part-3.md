@@ -157,5 +157,5 @@ Koa的核心代码其实很短和好理解，还有很多就是中间件、第�
 ## Related posts
 
 > Koa源码阅读：  
-> [Koa Core - 源码阅读 1 - Application](./2018-08-15-koa-core-read-source-code-part-1.md)  
-> [Koa Core - 源码阅读 2 - Context](./2018-09-26-koa-core-read-source-code-part-2.md)
+> [Koa Core - 源码阅读 1 - Application](/posts/2018/08/15/koa-core-read-source-code-part-1.html)  
+> [Koa Core - 源码阅读 2 - Context](/posts/2018/09/26/koa-core-read-source-code-part-2.html)

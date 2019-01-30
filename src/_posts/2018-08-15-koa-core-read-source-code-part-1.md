@@ -461,5 +461,5 @@ inspect() {
 ## Related posts
 
 > Koa源码阅读：  
-> [Koa Core - 源码阅读 2 - Context](./2018-09-26-koa-core-read-source-code-part-2.md)  
-> [Koa Core - 源码阅读 3 - Request & Response](./2018-11-06-koa-core-read-source-code-part-3.md)
+> [Koa Core - 源码阅读 2 - Context](/posts/2018/09/26/koa-core-read-source-code-part-2.html)  
+> [Koa Core - 源码阅读 3 - Request & Response](/posts/2018/11/06/koa-core-read-source-code-part-3.html)
