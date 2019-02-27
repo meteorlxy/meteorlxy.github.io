@@ -13,8 +13,8 @@
     "url": "git+https://github.com/meteorlxy/meteorlxy.github.io.git"
   },
   "dependencies": {
-    "@vuepress/plugin-google-analytics": "^1.0.0-alpha.39",
-    "vuepress": "^1.0.0-alpha.39",
-    "vuepress-theme-meteorlxy": "1.0.0-alpha.13"
+    "@vuepress/plugin-google-analytics": "^1.0.0-alpha.40",
+    "vuepress": "^1.0.0-alpha.40",
+    "vuepress-theme-meteorlxy": "1.0.0-alpha.17"
   }
 }
