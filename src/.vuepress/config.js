@@ -13,9 +13,14 @@ module.exports = {
     },
   },
 
-  theme: 'meteorlxy',
+  theme: require.resolve('vuepress-theme-meteorlxy/lib'),
 
   themeConfig: {
+    lang: Object.assign({
+      home: `Welcome to meteorlxy's Homepage`,
+      posts: 'My Posts',
+    }, require('vuepress-theme-meteorlxy/lib/langs/zh-CN')),
+
     personalInfo: {
       nickname: 'meteorlxy',
       description: 'Happy Coding<br/>Happy Life',
@@ -66,7 +71,7 @@ module.exports = {
     nav: [
       { text: 'Home', link: '/', exact: true },
       { text: 'Posts', link: '/posts/', exact: false  },
-      { text: 'About', link: '/about/', exact: false  }, 
+      { text: 'Projects', link: '/projects/', exact: false  }, 
     ],
 
     comments: {
