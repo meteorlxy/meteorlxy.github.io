@@ -16,10 +16,10 @@ module.exports = {
   theme: require.resolve('vuepress-theme-meteorlxy/lib'),
 
   themeConfig: {
-    lang: Object.assign({
+    lang: Object.assign(require('vuepress-theme-meteorlxy/lib/langs/zh-CN'), {
       home: `Welcome to meteorlxy's Homepage`,
       posts: 'My Posts',
-    }, require('vuepress-theme-meteorlxy/lib/langs/zh-CN')),
+    }),
 
     personalInfo: {
       nickname: 'meteorlxy',
