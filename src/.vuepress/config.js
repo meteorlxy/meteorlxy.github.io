@@ -13,7 +13,7 @@ module.exports = {
     },
   },
 
-  theme: require.resolve('vuepress-theme-meteorlxy/lib'),
+  theme: 'vuepress-theme-meteorlxy',
 
   themeConfig: {
     lang: Object.assign(require('vuepress-theme-meteorlxy/lib/langs/zh-CN'), {

@@ -1,5 +1,4 @@
 ---
-layout: post
 category: Essay
 title: 'Hello, World!'
 description: 'The first post of my blog'
