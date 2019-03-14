@@ -87,8 +87,8 @@ module.exports = {
 
   markdown: {
     toc: {
-      includeLevel: [2, 3, 4]
-    }
+      includeLevel: [2, 3],
+    },
   },
 
   plugins: [
@@ -105,16 +105,16 @@ module.exports = {
           vue: {
             test: /[\\/]node_modules[\\/](vue|vue-router)[\\/]/,
             name: 'vendor.vue',
-            chunks: 'all'
+            chunks: 'all',
           },
           commons: {
             test: /[\\/]node_modules[\\/]/,
             priority: -10,
             name: 'vendor.commons',
-            chunks: 'all'
-          }
-        }
+            chunks: 'all',
+          },
+        },
       })
     }
-  }
+  },
 }
