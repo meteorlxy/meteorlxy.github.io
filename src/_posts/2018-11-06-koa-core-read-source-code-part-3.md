@@ -34,19 +34,15 @@ Koa的核心代码很少，就四个文件`application`, `context`, `request`, `
 
 ## Request
 
-### socket()
+### Request Socket
+
+> `socket()`
 
 获取请求对应的`socket`对象，即`req.socket`。
 
-### header(), headers(), get()
+### Request URL 相关
 
-`header()`和`headers()`是等价的别名，针对request的headers信息，设置相应的getter和setter。只有`get header()`和`get headers()`被代理到了`ctx`上。
-
-`get()`是一个方法，用于获取header中的字段。
-
-例如：`request.header['Content-Type']` 等价于 `request.get('Content-Type')`
-
-### url(), origin(), href(), path(), query(), querystring(), search(), host(), hostname(), URL(), subdomains(), protocol(), secure()
+> `url()`, `origin()`, `href()`, `path()`, `query()`, `querystring()`, `search()`, `host()`, `hostname()`, `URL()`, `subdomains()`, `protocol()`, `secure()`
 
 URL相关的一系列方法，用于解析、获取URL中的相关信息。
 
@@ -57,7 +53,17 @@ URL相关的一系列方法，用于解析、获取URL中的相关信息。
 - `url()`直接对应的是`req.url`
 - `URL()`是通过[`url.URL`](https://nodejs.org/api/url.html#url_class_url)类，将`protocol()`, `host()`, `req.url`拼接在一起得到的`URL`对象
 
-### method(), idempotent(), fresh(), stale(), charset(), length(), ips(), ip(), is(), type()
+### Request Header 获取
+
+> `header()`, `headers()`, `get()`
+
+`header()`和`headers()`是等价的别名，针对request的headers信息，设置相应的getter和setter。只有`get header()`和`get headers()`被代理到了`ctx`上。
+
+`get()`是一个方法，用于获取header中的字段。
+
+例如：`request.header['Content-Type']` 等价于 `request.get('Content-Type')`
+
+### Request Header 相关
 
 通过请求中的各个headers，获取相关的内容：
 
@@ -72,25 +78,27 @@ URL相关的一系列方法，用于解析、获取URL中的相关信息。
 - `is()`: 判断请求的`Content-Type`是否是某种或某些类型，通过第三方库`type-is`实现。
 - `type()`: 获取请求的`Content-Type`。
 
-### accept(), accepts(), acceptsEncodings(), acceptsCharsets(), acceptsLanguages()
-
 - `accept()`: 解析请求的`Accept-*`一系列headers。通过第三方库`accepts`实现，返回该库的一个`Accept`对象。
 - `accepts()`: 即`accept.types`方法，判断请求的`Content-Type`是否匹配某种或某些类型。返回传入的最匹配的类型，如果均不匹配返回`false`。
 - `acceptsCharsets()`: 即`accept.charsets`方法，判断`Accept-Charset`。
 - `acceptsLanguages()`: 即`accept.languages`方法，判断`Accept-Language`。
-- `acceptsEncodings()`: 即`accept.languages`方法，判断`Accept-Encoding`。
+- `acceptsEncodings()`: 即`accept.encodings`方法，判断`Accept-Encoding`。
 
-### inspect(), toJSON()
+### Request 其它方法
+
+> `inspect()`, `toJSON()`
 
 Request的`inspect`方法。
 
 ## Response
 
-### socket()
+### Response Socket
+
+> `socket()`
 
 获取响应对应的`socket`对象，即`res.socket`。
 
-### header(), headers(), get(), set(), append(), remove()
+### Response Header 设置
 
 `header()`和`headers()`是等价的别名，针对response的headers信息，仅有getter，而没有setter。`get()`是一个方法，用于获取header中的字段。这三个与request中对应的方法相同，但注意均没有被代理到`ctx`上。
 
@@ -110,15 +118,7 @@ response.append('Fo', 'baz') // -> Fo: bar; baz
 
 `set(), append(), remove()`均被代理到了`ctx`上。
 
-### status(), message(), body()
-
-- `status()`: 获取和设置响应的HTTP状态码，并将请求的`message`和`body`设置为相应的信息。通过第三方库`statuses`来判断状态码是否合法，并获取对应状态码的状态信息。
-- `message()`: 获取和设置响应的HTTP状态码信息。如果使用的HTTP版本低于2.0，将会根据`status()`自动设置（HTTP2.0中不再包含状态信息，只包含状态码）。
-- `body()`: 获取和设置响应的主体，并根据传入的类型自动设置`Content-Type`, `Content-Length`等相关headers，以及设置状态码为`200 OK`或`204 No Content`。
-
-注意这三个方法会彼此调用，一般只设置`status()`或只设置`body()`即可。
-
-### length(), vary(), lastModified(), etag(), type(), is(), attachment(), redirect()
+### Response Header 相关
 
 - `length()`: 用于获取和设置响应的`Content-Length`，若没有手动设置过，则自动计算`body`的长度。
 - `vary()`: 用于设置响应的`Vary`，通过第三方库`vary`实现。
@@ -129,13 +129,23 @@ response.append('Fo', 'baz') // -> Fo: bar; baz
 - `attachment()`: 用于设置响应的`Content-Disposition`为`attachment`，同时可以传入`filename`。如果传入`filename`，则会通过`path.extname`判断扩展名，自动设置相应的`Content-Type`。通过第三方库`content-disposition`来辅助实现。
 - `redirect()`: 用于设置响应的`Location`，同时将`status`设置为302（除非手动设置为301）。如果请求的`Referrer`存在，可以通过传入`'back'`跳转回之前页面。同时根据请求的`Accepts`预设了返回的`body`内容和相应的`Content-Type`.
 
-### headerSent(), writable(), flushHeaders()
+### Response 具体响应
+
+- `status()`: 获取和设置响应的HTTP状态码，并将请求的`message`和`body`设置为相应的信息。通过第三方库`statuses`来判断状态码是否合法，并获取对应状态码的状态信息。
+- `message()`: 获取和设置响应的HTTP状态码信息。如果使用的HTTP版本低于2.0，将会根据`status()`自动设置（HTTP2.0中不再包含状态信息，只包含状态码）。
+- `body()`: 获取和设置响应的主体，并根据传入的类型自动设置`Content-Type`, `Content-Length`等相关headers，以及设置状态码为`200 OK`或`204 No Content`。
+
+注意这三个方法会彼此调用，一般只设置`status()`或只设置`body()`即可。
+
+### Response 状态
 
 - `headerSent()`: 判断响应的headers的内容是否已经写入`socket`，如果已经写入了，上述所有修改headers的方法都将失效，直接return。
 - `writable()`: 判断响应的`socket`是否可写，如果响应已结束或者socket已关闭则不可写。
 - `flushHeaders()`: 立即将现在已经设置好的headers发送，并开始body部分。
 
-### inspect(), toJSON()
+### Response 其它方法
+
+> `inspect()`, `toJSON()`
 
 Response的`inspect`方法。
 
