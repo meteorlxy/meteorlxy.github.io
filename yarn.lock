@@ -7139,10 +7139,10 @@ vuepress-plugin-smooth-scroll@^0.0.3:
   dependencies:
     smoothscroll-polyfill "^0.4.3"
 
-vuepress-theme-meteorlxy@1.0.0-alpha.25:
-  version "1.0.0-alpha.25"
-  resolved "https://registry.yarnpkg.com/vuepress-theme-meteorlxy/-/vuepress-theme-meteorlxy-1.0.0-alpha.25.tgz#33ccbdb25dfb49f42fdc60ac9f7a7d030cad123b"
-  integrity sha512-Q1DWvJc3z80KnbGPJysGrrX+uk5Iz28nJiP4O1LnUcFyBDg/CPf13v7sSDzWF3B5ngklv5d9yh8izmgaFpTsQQ==
+vuepress-theme-meteorlxy@1.0.0-alpha.27:
+  version "1.0.0-alpha.27"
+  resolved "https://registry.yarnpkg.com/vuepress-theme-meteorlxy/-/vuepress-theme-meteorlxy-1.0.0-alpha.27.tgz#032e42e6c66eb5c69de64f88d4135aa04e2ec1de"
+  integrity sha512-KosIeg5XVK2px1+wqGYsryR1EMO/3Fen7iUWcIl0r0+s0LS8x8XhsfUvZPpDBYEHI6Zdvl14mp96rDTuZ7jZpQ==
   dependencies:
     "@vssue/vuepress-plugin-vssue" "^0.7.2"
     "@vue/babel-preset-jsx" "^1.0.0-beta.2"
