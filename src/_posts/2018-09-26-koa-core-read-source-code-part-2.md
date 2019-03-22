@@ -28,8 +28,7 @@ Koa的核心代码很少，就四个文件`application`, `context`, `request`, `
 
 主要这四个文件，当然也还依赖了很多外部库，以及koa的其他仓库。这一篇看第二部分`lib/context`。
 
-
-[[toc]]
+<TOC />
 
 ## Context
 

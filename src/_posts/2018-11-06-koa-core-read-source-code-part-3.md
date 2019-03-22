@@ -30,7 +30,7 @@ Koa的核心代码很少，就四个文件`application`, `context`, `request`, `
 
 这两部分代码行数比较多，就不把所有代码贴出来了。
 
-[[toc]]
+<TOC />
 
 ## Request
 

@@ -18,7 +18,7 @@ vssue-title: 'HTTP Caching - HTTP 缓存'
 
 # HTTP Caching - HTTP 缓存
 
-[[toc]]
+<TOC />
 
 ## 可能进行缓存的内容
 
