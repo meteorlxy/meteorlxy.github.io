@@ -80,8 +80,9 @@ module.exports = {
       repo: 'meteorlxy.github.io',
       clientId: '960bbc7e80512b06153e',
       clientSecret: 'd63ad26efd7e29fc5a9533742d7fc5c88347b6ba',
-      prefix: '[Post Comments] ',
+      prefix: '[Comments] ',
       labels: ['comments'],
+      autoCreateIssue: process.env.NODE_ENV === 'production',
     },
   },
 
