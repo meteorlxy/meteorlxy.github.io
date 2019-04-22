@@ -15,7 +15,7 @@
   "dependencies": {
     "@vuepress/plugin-google-analytics": "1.0.0-alpha.44",
     "vuepress": "1.0.0-alpha.44",
-    "vuepress-theme-meteorlxy": "1.0.0-alpha.34"
+    "vuepress-theme-meteorlxy": "1.0.0-alpha.35"
   },
   "devDependencies": {
     "cross-env": "^5.2.0"

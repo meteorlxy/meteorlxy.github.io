@@ -7156,10 +7156,10 @@ vuepress-plugin-zooming@^1.0.0:
   dependencies:
     zooming "^2.1.1"
 
-vuepress-theme-meteorlxy@1.0.0-alpha.34:
-  version "1.0.0-alpha.34"
-  resolved "https://registry.yarnpkg.com/vuepress-theme-meteorlxy/-/vuepress-theme-meteorlxy-1.0.0-alpha.34.tgz#874c18db782b1c2e57c54b51cdf9575f71b80f20"
-  integrity sha512-HmWfd6+tak/WwWcEdyJCZNiQQft9Gqsa0qQavaUhSEhvN5ky7dFEOJmBAIZNkyLLrTeKuEaTA8NQPibEIIAfEQ==
+vuepress-theme-meteorlxy@1.0.0-alpha.35:
+  version "1.0.0-alpha.35"
+  resolved "https://registry.yarnpkg.com/vuepress-theme-meteorlxy/-/vuepress-theme-meteorlxy-1.0.0-alpha.35.tgz#ea80ac661ae19caea63811cb8ef43fb68dd2bf2f"
+  integrity sha512-TtrI+cIEtR3St+qzeu1x8hDAn5UqHmwiUjE029QYvh7fqX0CkEuqriJHhxKKxNczj9H1Q7+iQcjGrOOTI8YJWQ==
   dependencies:
     "@vssue/vuepress-plugin-vssue" "^0.8.1"
     "@vue/babel-preset-jsx" "^1.0.0-beta.2"
