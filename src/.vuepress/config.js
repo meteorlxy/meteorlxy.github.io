@@ -25,8 +25,8 @@ module.exports = {
       nickname: 'meteorlxy',
       description: 'Happy Coding<br/>Happy Life',
       email: 'meteor.lxy@foxmail.com',
-      location: 'Xi\'an City, China',
-      organization: 'Xi\'an Jiao Tong University',
+      location: 'Shenzhen, China',
+      organization: 'Tencent',
 
       avatar: '/assets/img/avatar.jpg',
 
@@ -82,7 +82,6 @@ module.exports = {
       clientSecret: 'd63ad26efd7e29fc5a9533742d7fc5c88347b6ba',
       prefix: '[Comments] ',
       labels: ['comments'],
-      autoCreateIssue: process.env.NODE_ENV === 'production',
     },
   },
 
