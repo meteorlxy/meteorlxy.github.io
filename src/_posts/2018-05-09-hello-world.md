@@ -6,7 +6,6 @@ date: 2018-05-09
 vssue-title: 'Hello, World!'
 ---
 
-
 自从学了 Vue 之后，jQuery 就不说了，连正经的 HTML 都不想写了，所以连 Blog 也想用 Vue 来制作。
 
 常用的博客框架如 Jekyll、Hexo 等，都有自己的一套模板系统，强行使用 Vue 的话，两边的功能和特点都不能完全发挥。
