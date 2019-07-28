@@ -7506,10 +7506,10 @@ vuepress-plugin-zooming@^1.0.0:
   dependencies:
     zooming "^2.1.1"
 
-vuepress-theme-meteorlxy@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/vuepress-theme-meteorlxy/-/vuepress-theme-meteorlxy-1.1.0.tgz#f8db91009546e08599893442154b93b2ba762f16"
-  integrity sha512-tcnT5/CbKJkU9McG/+V4u65umQoMAW3lXjFN69/RUKvpN1u0sJ5qqRFbzPeLDYCWZp27Cz/LAgeVlwKJTwMH4A==
+vuepress-theme-meteorlxy@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vuepress-theme-meteorlxy/-/vuepress-theme-meteorlxy-1.2.0.tgz#789154e161835c5385d821ca56d4ccf9ea20aaec"
+  integrity sha512-usN0c7ZSLCwHsl7UPQIm1lNW+VLRtj2fR7MT/n5w6HjtmRRedQDgh/YulNyfVqK36XZUfaonYocJgHbBLWZPTA==
   dependencies:
     "@vssue/api-github-v3" "^1.0.0"
     "@vssue/vuepress-plugin-vssue" "^1.0.0"
