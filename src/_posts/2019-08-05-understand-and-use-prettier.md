@@ -30,7 +30,7 @@ Prettier 是一个代码样式检查与优化工具，除了少部分可配置�
 
 除此之外，Prettier 不只适用于 JS 代码，还适用于其他前端常用语言，只要一个工具就能免去绝大部分关于代码样式的烦恼，这也是 Prettier 广受欢迎的原因。
 
-![Prettier vs. Linters](/assets/img/posts/2019-08-05-prettier-vs-linters.png)
+![Prettier vs. Linters](/assets/img/posts/20190805-prettier-vs-linters.png)
 
 ## 如何使用 Prettier
 
