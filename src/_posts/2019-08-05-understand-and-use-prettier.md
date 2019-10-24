@@ -99,6 +99,6 @@ husky 和 lint-staged 就不单独介绍了，开发工作流好帮手，将 pre
 }
 ```
 
----
+## 相关文章
 
-EOF
+- [如何让 Prettier 更好地处理 Vue SFC](/posts/2019/10/24/eslint-plugin-prettier-vue.html)  
