@@ -71,7 +71,9 @@ module.exports = {
 ```
 
 ::: tip
-目前 Prettier 对 Vue 文件的支持并不理想，基本上会把 Vue 文件直接当作 HTML 文件对待，无法支持 Custom Blocks，更无法支持 Vue 官方 Style Guide 中对模板语法的建议。用 [eslint-plugin-prettier-vue](https://github.com/meteorlxy/eslint-plugin-prettier-vue) 代替 `eslint-plugin-prettier` 可以解决这个问题，将会在另一篇文章中详细说明。
+目前 Prettier 对 Vue 文件的支持并不理想，基本上会把 Vue 文件直接当作 HTML 文件对待，无法支持 Custom Blocks，同时和 Vue 官方 Style Guide 中对模板语法的建议有一定区别。
+
+使用 [eslint-plugin-prettier-vue](https://github.com/meteorlxy/eslint-plugin-prettier-vue) 代替 `eslint-plugin-prettier` 可以解决这个问题，这会在[另一篇文章](/posts/2019/10/24/eslint-plugin-prettier-vue.html)中详细说明。
 :::
 
 ### 配合 husky 和 lint-staged 使用
