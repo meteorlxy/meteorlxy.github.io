@@ -95,6 +95,12 @@ module.exports = {
     ['@vuepress/google-analytics', {
       'ga': 'UA-132770851-1',
     }],
+    // TODO: new feature in vuepress 1.3.0
+    ['container', {
+      type: 'details',
+      before: info => `<details class="custom-block details">${info ? `<summary>${info}</summary>` : ''}\n`,
+      after: () => '</details>\n'
+    }],
   ],
 
   chainWebpack: (config, isServer) => {
