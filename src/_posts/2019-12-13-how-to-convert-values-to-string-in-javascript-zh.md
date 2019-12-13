@@ -2,21 +2,21 @@
 category: Development
 tags:
   - js
-title: 'How to Convert Values to String in Javascript'
-description: 'How to Convert Values to String in Javascript'
+title: '如何将 Javascript 的值转换为字符串'
+description: '如何将 Javascript 的值转换为字符串'
 date: 2019-12-13
-vssue-title: 'How to Convert Values to String in Javascript'
+vssue-title: '如何将 Javascript 的值转换为字符串'
 ---
 
-Converting a primitive value to string is a common operation in javascript. It might be more common in typescript as you may need to ensure a value to be exact string type.
+将 JS 的原始类型 (primitive type) 转换成字符串是一个很常用的操作，在 TS 中可能更是如此，因为你可能需要保证某个值一定是字符串类型。
 
-Here we are going to discuss how to convert values to string.
+这篇文章就来讨论一下如何将一个值转换为字符串。
 
 <!-- more -->
 
-## Commonly Used Ways
+## 常用方法
 
-Typically, we have several ways to convert a `value` to string:
+我们有几种常用的方法来将 `value` 转换为字符串：
 
 ```js
 const emptyStringMethod = value => value + '';
@@ -26,30 +26,30 @@ const toStringMethod = value => value.toString();
 const concatMethod = value => ''.concat(value);
 ```
 
-1. Concat an empty string: `value => value + ''`
-    - A valid and effective way, but less explicit and less readable.
+1. 拼接一个空字符串： `value => value + ''`
+    - 一种有效的方法，但是语义并不明确，代码可读性较差。
 
-2. Use `String()` function: `value => String(value)`
-    - Explicit and descriptive enough to express the intention: convert it to string.
-    - The recommended way of [Airbnb JavaScript Style Guide](https://airbnb.io/javascript/#coercion--strings)
+2. 使用 `String()` 函数： `value => String(value)`
+    - 可以明确表达代码的目的：将这个值转换成字符串。
+    - 是 [Airbnb JavaScript Style Guide](https://airbnb.io/javascript/#coercion--strings) 中推荐使用的方法。
 
-3. Use template literals: `` value => `${value}` ``
-    - More explicit than #1. Less explicit than #2.
-    - ES6 syntax.
+3. 使用字符串模板： `` value => `${value}` ``
+    - 比 #1 更可读，但不如 #2。
+    - ES6 语法。
 
-4. Call `toString()` method: `value => value.toString()`
-    - Won't work if `value` is `null` or `undefined`.
-    - It is not guaranteed to return a string, as it may be rewritten by users.
+4. 调用 `toString()` 方法： `value => value.toString()`
+    - 如果 `value` 是 `null` 或者 `undefined` 时无法使用。
+    - 不能保证返回值一定是字符串，因为这个方法可能被用户重写。
 
-5. Call `concat()` method on an empty string: `value => ''.concat(value)`
-    - In fact it's not a commonly used way (I think).
-    - Babel will transpile #3 to this method if you enable `es2015` preset, so we also take it into consideration.
+5. 在一个空字符串上调用 `concat()` 方法： `value => ''.concat(value)`
+    - 实际上（我认为）这不是一种常用的方法。
+    - 如果你开启了 Babel 的 es2015 preset， Babel 会将 #3 转译成这种方法，所以我们也把这种方式考虑在内。
 
-## Test in Code
+## 在代码中测试
 
-Talk is cheap. Let's test them in code.
+说了这么多，还是直接在代码里测试一下这些方法吧。
 
-Here we use primitive types and some built-in objects for testing.
+这里我们使用 JS 的 原始类型 和一些内置的对象进行测试。
 
 ```js
 const undefinedValue = undefined;
@@ -67,9 +67,9 @@ const setValue = new Set();
 const symbolValue = Symbol();
 ```
 
-### Compatibility
+### 兼容性
 
-Call each method on each type to check their result.
+分为将每种方法在各个类型上使用，比较一下结果。
 
 |           | `value + ''`       | `String(value)`    | `` `${value}` ``   | `value.toString()` | `''.concat(value)` |
 |-----------|--------------------|--------------------|--------------------|--------------------|--------------------|
@@ -87,7 +87,7 @@ Call each method on each type to check their result.
 | set       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | symbol    | :x:                | :heavy_check_mark: | :x:                | :heavy_check_mark: | :x:                |
 
-::: details Click to see the result
+::: details 点击查看结果
 ```js
 // value => value + ''
 undefinedValue // undefined
@@ -151,9 +151,9 @@ symbolValue // Symbol()
 ```
 :::
 
-### Performance
+### 性能
 
-Call each method on each type 10,000,000 time in a for-loop, and use `console.time()` / `console.timeEnd()` to check their performance.
+对于每个类型，将每种方法在 for 循环中调用 10,000,000 次，使用 `console.time()` / `console.timeEnd()` 来测试他们的性能。
 
 |           | `value + ''`       | `String(value)`    | `` `${value}` ``   | `value.toString()` | `''.concat(value)` |
 |-----------|--------------------|--------------------|--------------------|--------------------|--------------------|
@@ -171,7 +171,7 @@ Call each method on each type 10,000,000 time in a for-loop, and use `console.ti
 | set       |                    |                    |                    | :trophy:           |                    |
 | symbol    | :x:                | :trophy:           | :x:                | :heavy_check_mark: | :x:                |
 
-::: details Click to see the result on CentOS 7 + Node v10.16.0
+::: details 点击查看 CentOS 7 + Node v10.16.0 的运行结果
 ```js
 // undefinedValue
 value => value + '' // undefinedValue: 58.000ms
@@ -292,7 +292,7 @@ value => value // symbolValue: 56.601ms
 ```
 :::
 
-::: details Click to see the result on Windows 10 + Chrome v75.0.3770.100
+::: details 点击查看 Windows 10 + Chrome v75.0.3770.100 的运行结果
 ```js
 // undefinedValue
 value => value + '' // undefinedValue: 102.10693359375ms
@@ -413,75 +413,75 @@ value => value // symbolValue: 165.337158203125ms
 ```
 :::
 
-## Conclusion
+## 结论
 
-- For best compatibility and explicit code style with the least code:
-  - use `String()`.
-- For best performance if you will transpile code into ES5:
-  - string: return itself directly
-  - `null`: return `'null'` or `''` directly
-  - Symbols: use `String()`
-  - Objects: use `toString()`
-  - Other primitive types: use `value + ''`
-- For best performance in ES6 (the `combinedMethod` in the performance result):
-  - string: return itself directly
-  - `null`: return `'null'` or `''` directly
-  - `undefined`: return `'undefined'` or `''` directly
-  - Symbols: use `String()`
-  - Objects: use `toString()`
-  - Other primitive types: use `` `${value}` ``
+- 想要使用最少的代码，并且使用语义明确的代码风格：
+  - 使用 `String()`.
+- 想要得到最好的性能，但你的代码要转译成 ES5 ：
+  - 字符串：直接返回它本身
+  - `null`：直接返回 `'null'` 或 `''`
+  - Symbols：使用 `String()`
+  - Objects: 使用 `toString()`
+  - 其他原始类型：使用 `value + ''`
+- 想要得到最好的性能，且直接使用 ES6 (即上面的性能结果中的 `combinedMethod`):
+  - 字符串：直接返回它本身
+  - `null`：直接返回 `'null'` 或 `''`
+  - `undefined`：直接返回 `'undefined'` 或 `''`
+  - Symbols：使用 `String()`
+  - Objects: 使用 `toString()`
+  - 其他原始类型：使用 `` `${value}` ``
 
 ::: tip
-Notice that more conditions will cost more time, too. So you could reduce the conditions depending on your usage.
+需要注意的是，你的判断条件越多，也同样会花费更多的时间。所以你可以根据你的实际使用情况下减少一些判断条件。
 
-Our conclusion might not be the best, you can check the implementations of some utils libs for references. For example, the [_.toString()](https://github.com/lodash/lodash/blob/cefddab1cab49189b2ff4d72acf8df7ec723dc22/toString.js) method of lodash has some differences from our conclusion, and they also consider many other edge cases.
+我们这里得到的结论并不一定是最佳的，你可以参考一些工具库的实现方法。例如， lodash 的 [_.toString()](https://github.com/lodash/lodash/blob/cefddab1cab49189b2ff4d72acf8df7ec723dc22/toString.js) 方法就和我们的结论有些区别，并且它们还考虑了更多边界情况。
 :::
 
-## Dig Deeper
+## 深入挖掘
 
-Here we only discuss `value + ''`, `String(value)` and template literals.
+这里我们只讨论 `value + ''`, `String(value)` 和字符串模板。
 
-**What happens when trying to convert a value to string?**
+**将一个值转换为字符串的时候发生了什么？**
 
-All the three approaches will use the [***internal ToString operation***](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-tostring):
+这三种方法都会使用 JS 的 [***内部 ToString 操作***](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-tostring)：
 
-| Type          | Result                                                                                                                           |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------|
-| Undefined     | Return `'undefined'`.                                                                                                            |
-| Null          | Return `'null'`.                                                                                                                 |
-| Boolean       | Return `'true'` or `'false'`.                                                                                                    |
-| Number        | Use ***internal NumberToString operation*** (some edge cases in lodash comes from it, let's ignore it here).                     |
-| String        | Return itself.                                                                                                                   |
-| Symbol        | Throw a TypeError exception.                                                                                                     |
-| Object        | Use ***internal ToPrimitive operation*** to convert it to primitive value, and then use ***internal ToString operation*** on it. |
+| 类型          | 结果                                                                                                                           |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------|
+| Undefined     | 返回 `'undefined'` 。                                                                                                          |
+| Null          | 返回 `'null'` 。                                                                                                               |
+| Boolean       | 返回 `'true'` 或 `'false'`.                                                                                                    |
+| Number        | 使用 ***内部 NumberToString 操作*** (lodash 中的一些边界情况就来自此处，我们这里不讨论这个操作) 。                                 |
+| String        | 返回它本身。                                                                                                                   |
+| Symbol        | 抛出一个 TypeError 异常。                                                                                                      |
+| Object        | 使用 ***内部 ToPrimitive 操作*** 将它转换为一个原始值，然后再对该原始值使用 ***内部 ToString 操作***。                            |
 
-**Why `String()` won't throw a TypeError on Symbols?**
+**为什么对 Symbols 使用 `String()` 不会导致 TypeError ？**
 
-> See [ECMAScript Specification](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-string-constructor-string-value)
+> 参考 [ECMAScript Specification](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-string-constructor-string-value)
 
-In brief, what `String()` does is:
+简单来讲， `String()` 做的事情是：
 
-- If `value` is a Symbol, use ***internal SymbolDescriptiveString operation*** to convert it to string, which is also used by `Symbol.prototype.toString()`.
-- Else, use ***internal ToString operation*** that described above.
+- If `value` 是 Symbol ，使用 ***内部 SymbolDescriptiveString 操作*** 将它转换为字符串，这个也同样是 `Symbol.prototype.toString()` 中使用的方法。
+- Else ，使用上面提到的 ***内部 ToString 操作***。
 
-That's the reason why `String()` can be used on Symbols.
+这就是 `String()` 可以对 Symbol 使用的原因。
 
-**What happens on Object?**
+**如何处理 Object ？**
 
-> Remember the following contents are **only for Object**.
+> 注意下面的内容都 **只是针对 Object** 的。
 
-The [***internal ToPrimitive operation***](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-toprimitive) is to convert a value to primitive type:
+[***内部 ToPrimitive 操作***](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-toprimitive) 用于将一个值转化为原始类型 (primitive type) ：
 
-In brief, what `ToPrimitive(value, hint)` does is:
+简单来讲， `ToPrimitive(value, hint)` 做的事情是：
 
-- If `hint` is not defined, set `hint` to `'default'`.
-- Else if `hint` is not `'string'`, set `hint` to `'number'`.
-- If `value[Symbol.toPrimitive]` is defined, return `value[Symbol.toPrimitive](hint)`.
+- If `hint` 没有传入，将 `hint` 设置为 `'default'` 。
+- Else if `hint` 不等于 `'string'` ，将 `hint` 设置为 `'number'`。
+- If 定义了 `value[Symbol.toPrimitive]` ，返回 `value[Symbol.toPrimitive](hint)` 的结果。
 - Else:
-    - If `hint` is `'default'`, set `hint` to `'number'`
-    - Use ***internal OrdinaryToPrimitive operation***, return `OrdinaryToPrimitive(value, hint)`.
+    - If `hint` 等于 `'default'` ，将 `hint` 设置为 `'number'` 。
+    - 使用 ***内部 OrdinaryToPrimitive 操作***，返回 `OrdinaryToPrimitive(value, hint)` 的结果。
 
-::: details Code of fake internal ToPrimitive operation
+::: details 模拟 内部 ToPrimitive 操作 的代码
 ```js
 function fakeInternalToPrimitive(value, hint = 'default') {
   if (value[Symbol.toPrimitive] !== undefined) {
@@ -495,7 +495,7 @@ function fakeInternalToPrimitive(value, hint = 'default') {
 ```
 :::
 
-It's obvious that the default behavior of ***internal ToPrimitive operation*** can be overridden by `[Symbol.toPrimitive]` method, and the `hint` argument could be `'default'`, `'number'` or `'string'`.
+很明显可以看出来，***内部 ToPrimitive 操作*** 的默认行为会被 `[Symbol.toPrimitive]` 所覆盖掉，并且 `hint` 参数可以是 `'default'`, `'number'` 或 `'string'`。
 
 ```js
 const obj = {
@@ -508,35 +508,36 @@ console.log(String(obj)); // Result of [Symbol.toPrimitive]('string')
 console.log(`${obj}`); // Result of [Symbol.toPrimitive]('string')
 ```
 
-So the differences of these three approaches are:
+因此，这三种方法的区别在于：
 
 - `value + ''`
-  - It will call ***internal ToPrimitive operation*** without `hint` (i.e. `'default'`)
-  - [Reference](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-addition-operator-plus-runtime-semantics-evaluation)
+  - 它会调用 ***内部 ToPrimitive 操作***，并且不会传入 `hint` (即使用 `'default'`)
+  - [参考链接](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-addition-operator-plus-runtime-semantics-evaluation)
 - `String(value)`
-  - It will call ***internal ToString operation***, which will call ***internal ToPrimitive operation*** with `'string'`
-  - [Reference](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-string-constructor-string-value)
+  - 它会调用 ***内部 ToString 操作***，进而会调用 ***内部 ToPrimitive 操作*** 并传入 `'string'` 作为 `hint`
+  - [参考链接](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-string-constructor-string-value)
 - `` `${value}` ``
-  - It will call ***internal ToString operation***, which will call ***internal ToPrimitive operation*** with `'string'`
-  - [Reference](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-template-literals-runtime-semantics-evaluation)
+  - 它会调用 ***内部 ToString 操作***，进而会调用 ***内部 ToPrimitive 操作*** 并传入 `'string'` 作为 `hint`
+  - [参考链接](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-template-literals-runtime-semantics-evaluation)
 
-Next, if `[Symbol.toPrimitive]` is not defined:
 
-- `value + ''` will call ***internal OrdinaryToPrimitive operation*** with `'number'`
-- `String(value)` and `` `${value}` `` will call ***internal OrdinaryToPrimitive operation*** with `'string'`
+接下来，如果 `[Symbol.toPrimitive]` 没有被定义：
 
-In brief, what `OrdinaryToPrimitive(value, hint)` does is:
+- `value + ''` 会调用 ***内部 OrdinaryToPrimitive 操作*** 并传入 `'number'` 作为 `hint`
+- `String(value)` 和 `` `${value}` `` 会调用 ***内部 OrdinaryToPrimitive 操作*** 并传入 `'string'` 作为 `hint`
 
-- If `hint` is `'string'`:
-  - If the result of `value.toString()` is not Object, return the result.
-  - Else if the result of `value.valueOf()` is not Object, return the result.
-  - Else, Throw a TypeError exception.
+简单来讲， `OrdinaryToPrimitive(value, hint)` 做的事情是：
+
+- If `hint` 等于 `'string'`:
+  - If `value.toString()` 的结果不是 Object ，则返回该结果。
+  - Else if `value.valueOf()` 的结果不是 Object ，则返回该结果。
+  - Else ，抛出 TypeError 异常。
 - Else:
-  - If the result of `value.valueOf()` is not Object, return the result.
-  - Else if the result of `value.toString()` is not Object, return the result.
-  - Else, Throw a TypeError exception.
+  - If `value.valueOf()` 的结果不是 Object ，则返回该结果。
+  - Else if `value.toString()` 的结果不是 Object ，则返回该结果。
+  - Else ，抛出 TypeError 异常。
 
-::: details Code of fake internal OrdinaryToPrimitive operation
+::: details 模拟 内部 OrdinaryToPrimitive 操作 的代码
 ```js
 function fakeInternalOrdinaryToPrimitive(value, hint) {
   let methodNames;
@@ -556,7 +557,7 @@ function fakeInternalOrdinaryToPrimitive(value, hint) {
 ```
 :::
 
-So the only difference of `hint = 'string'` and `hint = 'number'` is:
+所以 `hint = 'string'` 和 `hint = 'number'` 唯一的区别在于：
 
 - `'string'`: `toString()` -> `valueOf()`
 - `'number'`: `valueOf()` -> `toString()`
@@ -590,36 +591,36 @@ String(obj);
 ```
 
 ::: tip
-`Date.prototype[Symbol.toPrimitive]` and `Symbol.prototype[Symbol.toPrimitive]` are pre-defined by default, so the default behaviors are not the same with other Objects.
+`Date.prototype[Symbol.toPrimitive]` 和 `Symbol.prototype[Symbol.toPrimitive]` 是已经预定义过的，所以它们的默认行为和其它 Object 不一样。
 :::
 
-Now we know the reason why babel transpile template literals to ES5 in this way:
+现在我们知道，为什么 Babel 会把字符串模板转译成这样了：
 
-- In es2015 preset:
+- 使用 es2015 preset:
 
 ```js
 // From
 value => `${value}`;
 
 // To
-// Keep exact the same internal behavior
+// 保持完全一致的内部行为
 "".concat(value);
 ```
 
-- In es2015-loose preset:
+- 使用 es2015-loose preset:
 
 ```js
 // From
 value => `${value}`;
 
 // To
-// Different internal behavior, better performance
+// 内部行为不同，但性能更好
 "" + value;
 ```
 
 ## Resources
 
-- Source code of tests - [Gist](https://gist.github.com/meteorlxy/c5f056144df3d60e0ec3c087a2f84e37)
+- 测试用代码 - [Gist](https://gist.github.com/meteorlxy/c5f056144df3d60e0ec3c087a2f84e37)
 
 ## References
 
