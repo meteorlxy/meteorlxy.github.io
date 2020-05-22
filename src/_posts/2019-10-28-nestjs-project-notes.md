@@ -4,6 +4,7 @@ tags:
   - js
   - nodejs
   - nestjs
+  - note
 title: 'Nestjs 项目开发笔记'
 description: 'Nestjs 项目开发笔记'
 date: 2019-10-28
