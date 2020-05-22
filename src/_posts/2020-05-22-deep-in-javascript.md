@@ -5,7 +5,7 @@ tags:
   - note
 title: '【学习笔记】 JavaScript 深入系列'
 description: '冴羽 JavaScript 深入系列学习笔记'
-date: 2019-12-13
+date: 2020-05-22
 vssue-title: '【学习笔记】 JavaScript 深入系列'
 ---
 
