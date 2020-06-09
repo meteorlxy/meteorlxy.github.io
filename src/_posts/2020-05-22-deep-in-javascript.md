@@ -215,4 +215,54 @@ Function.prototype
 
 ## JavaScript 深入之词法作用域和动态作用域
 
+JS 作用域类别：
+
+- 全局作用域 Global Scope
+- 函数作用域 Function Scope
+- 块级作用域 Block Scope （ES6 引入）
+
+JS 使用的是词法作用域，即静态作用域，意思是作用域在静态词法分析的阶段就已经确定了，而并非在运行时动态决定。
+
+拿函数作用域来说，函数的作用域在函数定义的时候就决定了，而不是执行的时候再决定。
+
+实际上，函数定义时确定的只是作用域链 (Scope chain) 的查找顺序，在执行时才会真正在运行时的作用域链中查找变量。
+
+## JavaScript 深入之执行上下文栈
+
+> 执行上下文相关的内容，可以配合 [可视化工具](https://tylermcginnis.com/javascript-visualizer/) 直观感受
+
+JS 的执行上下文，是存在一个栈中的。
+
+开始执行 JS 时，会创建一个全局上下文在栈底，调用函数时创建新的上下文并压栈，函数返回时出栈。
+
+### 执行上下文
+
+JS 执行上下文类别：
+
+- 全局执行上下文 Global Execution Context
+- 函数执行上下文 Function Execution Context
+- Eval 执行上下文 Eval Execution Context
+
+执行上下文会经历两个阶段：
+
+- 创建阶段 Creation Phase
+  - 创建词法环境 Lexical Environment
+  - 创建变量环境 Variable Environment
+- 执行阶段 Execution Phase
+  - 代码执行，进行变量赋值、上下文创建等
+
+Lexical Environment 由三部分组成：
+
+- 变量对象 Variable Object / 环境记录 Environment Record ，用于存储当前 Context 中的变量和函数
+- 作用域链 Scope Chain ，即对外层上下文的引用，可能为 null
+- "this" binding ，即对 "this" 关键字的绑定关系
+
+Variable Environment 也是一个 Lexical Environment ，区别在于 Variable Environment 的变量对象存储的变量和函数是由 `var` 声明的，而 Lexical Environment 的变量对象存储的变量和函数是由 `let` 和 `const` 声明的。
+
+理解了 Lexical Environment 的三个部分，也就理解了执行上下文的核心要素了。
+
+后面三篇分别是对这三部分内容的深入。
+
+## JavaScript 深入之变量对象
+
 > TODO
