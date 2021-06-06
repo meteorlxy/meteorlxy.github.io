@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Koa Core - 源码阅读 2 - Context | Meteorlxy</title>
+    <meta name="description" content="Read and learn the source code of koa core. Part 2: Context">
+    <link rel="icon" href="/assets/img/avatar.jpg">
+    <link rel="preload" href="/assets/css/3.styles.1dac5719.css" as="style"><link rel="preload" href="/assets/js/vendor.2.1dac5719.js" as="script"><link rel="preload" href="/assets/js/vendor.1.27c1b491.js" as="script"><link rel="preload" href="/assets/css/0.styles.85f8c959.css" as="style"><link rel="preload" href="/assets/js/vendor.0.85f8c959.js" as="script"><link rel="preload" href="/assets/js/app.d3b3b19c.js" as="script"><link rel="preload" href="/assets/js/11.db5e2ccd.js" as="script"><link rel="prefetch" href="/assets/css/4.styles.1f761703.css"><link rel="prefetch" href="/assets/js/10.5880b135.js"><link rel="prefetch" href="/assets/js/12.010128d0.js"><link rel="prefetch" href="/assets/js/13.f279abaf.js"><link rel="prefetch" href="/assets/js/14.55a39220.js"><link rel="prefetch" href="/assets/js/15.f239dde7.js"><link rel="prefetch" href="/assets/js/16.84da3b21.js"><link rel="prefetch" href="/assets/js/17.0ee24ab6.js"><link rel="prefetch" href="/assets/js/18.7dedf05f.js"><link rel="prefetch" href="/assets/js/19.c4c7b1d3.js"><link rel="prefetch" href="/assets/js/20.1d12d024.js"><link rel="prefetch" href="/assets/js/4.1f761703.js"><link rel="prefetch" href="/assets/js/5.bdd7c5b3.js"><link rel="prefetch" href="/assets/js/6.203a490e.js"><link rel="prefetch" href="/assets/js/7.77641c2f.js"><link rel="prefetch" href="/assets/js/8.394fd8aa.js"><link rel="prefetch" href="/assets/js/9.ff38e315.js">
+    <link rel="stylesheet" href="/assets/css/3.styles.1dac5719.css"><link rel="stylesheet" href="/assets/css/0.styles.85f8c959.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-meteorlxy"><header class="header" data-v-0be91240><div data-v-740e207b data-v-0be91240><nav class="navbar" data-v-740e207b><div class="container" data-v-740e207b><a href="/" class="router-link-active" data-v-740e207b><span class="navbar-site-name" data-v-740e207b>
+          Meteorlxy
+        </span></a> <div class="navbar-toggler" data-v-740e207b><svg class="icon" style="font-size:1.2em;" data-v-740e207b data-v-740e207b><title data-v-740e207b data-v-740e207b>menu</title><use xlink:href="#icon-menu" data-v-740e207b data-v-740e207b></use></svg></div> <div class="navbar-links" data-v-740e207b><a href="/" class="navbar-link" data-v-740e207b>
+            Home
+          </a><a href="/posts/" class="navbar-link router-link-active" data-v-740e207b>
+            Posts
+          </a><a href="/projects/" class="navbar-link" data-v-740e207b>
+            Projects
+          </a></div></div></nav> <div class="navbar-holder" style="display:none;" data-v-740e207b></div></div> <div class="banner" data-v-98d6aa8c data-v-0be91240 data-v-0be91240><div class="container" data-v-98d6aa8c><div class="center" data-v-98d6aa8c><h1 data-v-98d6aa8c data-v-0be91240>
+          Koa Core - 源码阅读 2 - Context
+        </h1></div></div></div></header> <div class="container clearfix show-aside" data-v-6e91a59a data-v-6e91a59a><main class="main" data-v-6e91a59a><div class="post" data-v-6e91a59a data-v-6e91a59a><section class="post-meta main-div" data-v-4e23451f><section class="post-date clearfix" data-v-4e23451f><span class="create-date" data-v-4e23451f>
+      发布时间 : 2018-09-26
+    </span> <!----></section> <section class="post-links" data-v-4e23451f><a href="/posts/2018/09/25/node-event-loop.html" class="post-link" data-v-4e23451f>
+      上一篇 : Event Loop in Node.js - Node 事件循环
+    </a> <a href="/posts/2018/11/06/koa-core-read-source-code-part-3.html" class="post-link" data-v-4e23451f>
+      下一篇 : Koa Core - 源码阅读 3 - Request &amp; Response
+    </a></section></section> <article class="main-div"><div class="post-content content content__default"><p>阅读学习Koa Core源码，基于koa v2.5.2。</p> <p>Koa的核心代码很少，就四个文件<code>application</code>, <code>context</code>, <code>request</code>, <code>response</code>，算上注释和空行目前也还没过2000行代码。</p> <p>这一篇针对<code>context</code>的源码进行阅读学习。</p> <h1 id="koa-core"><a href="#koa-core" class="header-anchor">#</a> Koa Core</h1> <p><a href="https://github.com/koajs/koa/tree/2.5.2" target="_blank" rel="noopener noreferrer">koajs/koa<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <ul><li><code>lib/application</code></li> <li><code>lib/context</code></li> <li><code>lib/request</code></li> <li><code>lib/response</code></li></ul> <p>主要这四个文件，当然也还依赖了很多外部库，以及koa的其他仓库。这一篇看第二部分<code>lib/context</code>。</p> <div><ul><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#context">Context</a><ul><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#delegation">Delegation</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#assert-throw">assert(), throw()</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#onerror">onerror()</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#cookies">cookies()</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#inspect-tojson">inspect(), toJSON()</a></li></ul></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#summary">Summary</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#references">References</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#related-posts">Related posts</a></li></ul></div> <h2 id="context"><a href="#context" class="header-anchor">#</a> Context</h2> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">/**
+ * Context prototype.
+ */</span>
+<span class="token keyword">const</span> proto <span class="token operator">=</span> module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><code>context</code>, <code>request</code>, <code>response</code>其实exports的都是一个对象，而不是一个class。</p> <p>在<code>Application</code>的代码里可以看到，都是通过<code>Object.create(context)</code>的方式创建的。所以这里的<code>proto</code>就是实际使用中<code>ctx</code>的<code>prototype</code>。其实不是很准确，实际使用的<code>ctx</code>是<code>Object.create(Object.create(context))</code>，所以准确来说，<code>proto</code>是<code>ctx</code>的原型对象的原型对象。实际都在原型链上，没有太大差别。</p> <hr> <h3 id="delegation"><a href="#delegation" class="header-anchor">#</a> Delegation</h3> <div class="language-js extra-class"><pre class="language-js"><code>
+<span class="token keyword">const</span> delegate <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'delegates'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/**
+ * Response delegation.
+ */</span>
+<span class="token function">delegate</span><span class="token punctuation">(</span>proto<span class="token punctuation">,</span> <span class="token string">'response'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'attachment'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'redirect'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'remove'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'vary'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'set'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'append'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'flushHeaders'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'status'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'body'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'length'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'type'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'lastModified'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'etag'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'headerSent'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'writable'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/**
+ * Request delegation.
+ */</span>
+<span class="token function">delegate</span><span class="token punctuation">(</span>proto<span class="token punctuation">,</span> <span class="token string">'request'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'acceptsLanguages'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'acceptsEncodings'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'acceptsCharsets'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'accepts'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'get'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token string">'is'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'querystring'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'idempotent'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'socket'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'search'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'method'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'query'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'url'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">access</span><span class="token punctuation">(</span><span class="token string">'accept'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'origin'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'href'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'subdomains'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'protocol'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'host'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'hostname'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'URL'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'header'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'headers'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'secure'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'stale'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'fresh'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'ips'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">(</span><span class="token string">'ip'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>这部分虽然在文件的末尾，但是其实是最主要的部分，所以写在开头。</p> <p><code>delegate</code>翻译过来就是<strong>委托、代理</strong>的意思，作用很好理解。通过<code>delegate</code>函数，将<code>response</code>和<code>request</code>中的方法、成员变量等，直接挂在<code>ctx</code>上。</p> <p>举例来说：</p> <ul><li>设置<code>ctx.body = ...</code>，实际上是<code>ctx.response.body = ...</code>，设置响应的<code>body</code>。</li> <li>获取<code>ctx.method</code>，实际上是获取<code>ctx.request.method</code>，查看请求的<code>method</code>。</li></ul> <hr> <h3 id="assert-throw"><a href="#assert-throw" class="header-anchor">#</a> assert(), throw()</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> createError <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'http-errors'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> httpAssert <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'http-assert'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//...</span>
+<span class="token keyword">const</span> proto <span class="token operator">=</span> module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">//...</span>
+  <span class="token comment">/**
+   * Similar to .throw(), adds assertion.
+   *
+   *    this.assert(this.user, 401, 'Please login!');
+   *
+   * See: https://github.com/jshttp/http-assert
+   *
+   * @param {Mixed} test
+   * @param {Number} status
+   * @param {String} message
+   * @api public
+   */</span>
+  assert<span class="token punctuation">:</span> httpAssert<span class="token punctuation">,</span>
+  <span class="token comment">/**
+   * Throw an error with `msg` and optional `status`
+   * defaulting to 500. Note that these are user-level
+   * errors, and the message may be exposed to the client.
+   *
+   *    this.throw(403)
+   *    this.throw('name required', 400)
+   *    this.throw(400, 'name required')
+   *    this.throw('something exploded')
+   *    this.throw(new Error('invalid'), 400);
+   *    this.throw(400, new Error('invalid'));
+   *
+   * See: https://github.com/jshttp/http-errors
+   *
+   * @param {String|Number|Error} err, msg or status
+   * @param {String|Number|Error} [err, msg or status]
+   * @param {Object} [props]
+   * @api public
+   */</span>
+  <span class="token keyword">throw</span><span class="token punctuation">(</span><span class="token operator">...</span>args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">throw</span> <span class="token function">createError</span><span class="token punctuation">(</span><span class="token operator">...</span>args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">//...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>用于抛出错误信息，依赖于<code>http-errors</code>和<code>http-assert</code>这两个库。<code>assert</code>如果不满足要求，就会同样抛出一个<code>http-errors</code>的<code>HttpError</code>，和<code>throw()</code>的效果是一样的。</p> <p>在<code>Application</code>中的<code>handleRequest</code>部分我们可以看到：</p> <div class="language-js extra-class"><div class="highlight-lines"><br><br><br><div class="highlighted"> </div><br><br><div class="highlighted"> </div><br><br></div><pre class="language-js"><code><span class="token function">handleRequest</span><span class="token punctuation">(</span><span class="token parameter">ctx<span class="token punctuation">,</span> fnMiddleware</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> res <span class="token operator">=</span> ctx<span class="token punctuation">.</span>res<span class="token punctuation">;</span>
+  res<span class="token punctuation">.</span>statusCode <span class="token operator">=</span> <span class="token number">404</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">onerror</span> <span class="token operator">=</span> <span class="token parameter">err</span> <span class="token operator">=&gt;</span> ctx<span class="token punctuation">.</span><span class="token function">onerror</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">handleResponse</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">respond</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">onFinished</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> onerror<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token function">fnMiddleware</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>handleResponse<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span>onerror<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>也就是说，<code>assert()</code>和<code>throw()</code>抛出的错误是通过<code>context</code>的<code>onerror()</code>方法处理的。</p> <hr> <h3 id="onerror"><a href="#onerror" class="header-anchor">#</a> onerror()</h3> <div class="language-js extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-js"><code><span class="token keyword">const</span> statuses <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'statuses'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//...</span>
+<span class="token keyword">const</span> proto <span class="token operator">=</span> module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">//...</span>
+  <span class="token comment">/**
+   * Default error handling.
+   *
+   * @param {Error} err
+   * @api private
+   */</span>
+  <span class="token function">onerror</span><span class="token punctuation">(</span><span class="token parameter">err</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// don't do anything if there is no error.</span>
+    <span class="token comment">// this allows you to pass `this.onerror`</span>
+    <span class="token comment">// to node-style callbacks.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">null</span> <span class="token operator">==</span> err<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>err <span class="token keyword">instanceof</span> <span class="token class-name">Error</span><span class="token punctuation">)</span><span class="token punctuation">)</span> err <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span>util<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'non-error thrown: %j'</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> headerSent <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>headerSent <span class="token operator">||</span> <span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>writable<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      headerSent <span class="token operator">=</span> err<span class="token punctuation">.</span>headerSent <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// delegate</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>app<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> err<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// nothing we can do here other</span>
+    <span class="token comment">// than delegate to the app-level</span>
+    <span class="token comment">// handler and log.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>headerSent<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> res <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token comment">// first unset all headers</span>
+    <span class="token comment">/* istanbul ignore else */</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> res<span class="token punctuation">.</span>getHeaderNames <span class="token operator">===</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      res<span class="token punctuation">.</span><span class="token function">getHeaderNames</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">name</span> <span class="token operator">=&gt;</span> res<span class="token punctuation">.</span><span class="token function">removeHeader</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      res<span class="token punctuation">.</span>_headers <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// Node &lt; 7.7</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// then set those specified</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>headers<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// force text/plain</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> <span class="token string">'text'</span><span class="token punctuation">;</span>
+    <span class="token comment">// ENOENT support</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'ENOENT'</span> <span class="token operator">==</span> err<span class="token punctuation">.</span>code<span class="token punctuation">)</span> err<span class="token punctuation">.</span>status <span class="token operator">=</span> <span class="token number">404</span><span class="token punctuation">;</span>
+    <span class="token comment">// default to 500</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'number'</span> <span class="token operator">!=</span> <span class="token keyword">typeof</span> err<span class="token punctuation">.</span>status <span class="token operator">||</span> <span class="token operator">!</span>statuses<span class="token punctuation">[</span>err<span class="token punctuation">.</span>status<span class="token punctuation">]</span><span class="token punctuation">)</span> err<span class="token punctuation">.</span>status <span class="token operator">=</span> <span class="token number">500</span><span class="token punctuation">;</span>
+    <span class="token comment">// respond</span>
+    <span class="token keyword">const</span> code <span class="token operator">=</span> statuses<span class="token punctuation">[</span>err<span class="token punctuation">.</span>status<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> msg <span class="token operator">=</span> err<span class="token punctuation">.</span>expose <span class="token operator">?</span> err<span class="token punctuation">.</span>message <span class="token punctuation">:</span> code<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>status <span class="token operator">=</span> err<span class="token punctuation">.</span>status<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">byteLength</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">//...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>默认用于处理<code>error</code>的函数，传入的参数就是<code>Error</code>实例。将<code>Error</code>转换为相应的Http响应，通过node http原生的<code>res</code>发送给客户端。</p> <p>注意区分<code>context</code>的<code>onerror()</code>和<code>application</code>的<code>onerror</code>。实际上，是先进入<code>context</code>的<code>onerror()</code>，然后通过上面的<code>this.app.emit('error', err, this);</code>，将<code>error</code>事件emit，然后<code>application</code>的<code>onerror()</code>作为handler再处理这个错误。</p> <hr> <h3 id="cookies"><a href="#cookies" class="header-anchor">#</a> cookies()</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> Cookies <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'cookies'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token constant">COOKIES</span> <span class="token operator">=</span> <span class="token function">Symbol</span><span class="token punctuation">(</span><span class="token string">'context#cookies'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//...</span>
+<span class="token keyword">const</span> proto <span class="token operator">=</span> module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">//...</span>
+  <span class="token keyword">get</span> <span class="token function">cookies</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">[</span><span class="token constant">COOKIES</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">[</span><span class="token constant">COOKIES</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Cookies</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>req<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>res<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+        keys<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>app<span class="token punctuation">.</span>keys<span class="token punctuation">,</span>
+        secure<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>request<span class="token punctuation">.</span>secure
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">[</span><span class="token constant">COOKIES</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token keyword">set</span> <span class="token function">cookies</span><span class="token punctuation">(</span><span class="token parameter">_cookies</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">[</span><span class="token constant">COOKIES</span><span class="token punctuation">]</span> <span class="token operator">=</span> _cookies<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>用于设置和获取<code>cookies</code>，依赖于<code>cookies</code>库。在创建<code>new Cookies()</code>实例的时候，传入了<code>request</code>, <code>response</code>和相关参数，所以就不用在代码的其他地方处理cookies相关的内容了。</p> <hr> <h3 id="inspect-tojson"><a href="#inspect-tojson" class="header-anchor">#</a> inspect(), toJSON()</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> util <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'util'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//...</span>
+<span class="token keyword">const</span> proto <span class="token operator">=</span> module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">//...</span>
+  <span class="token comment">/**
+   * util.inspect() implementation, which
+   * just returns the JSON output.
+   *
+   * @return {Object}
+   * @api public
+   */</span>
+  <span class="token function">inspect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token operator">===</span> proto<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">toJSON</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">/**
+   * Return JSON representation.
+   *
+   * Here we explicitly invoke .toJSON() on each
+   * object, as iteration will otherwise fail due
+   * to the getters and cause utilities such as
+   * clone() to fail.
+   *
+   * @return {Object}
+   * @api public
+   */</span>
+  <span class="token function">toJSON</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      request<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>request<span class="token punctuation">.</span><span class="token function">toJSON</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      response<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>response<span class="token punctuation">.</span><span class="token function">toJSON</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      app<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>app<span class="token punctuation">.</span><span class="token function">toJSON</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      originalUrl<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>originalUrl<span class="token punctuation">,</span>
+      req<span class="token punctuation">:</span> <span class="token string">'&lt;original node req&gt;'</span><span class="token punctuation">,</span>
+      res<span class="token punctuation">:</span> <span class="token string">'&lt;original node res&gt;'</span><span class="token punctuation">,</span>
+      socket<span class="token punctuation">:</span> <span class="token string">'&lt;original node socket&gt;'</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">//...</span>
+<span class="token punctuation">}</span>
+<span class="token comment">/**
+ * Custom inspection implementation for newer Node.js versions.
+ *
+ * @return {Object}
+ * @api public
+ */</span>
+<span class="token comment">/* istanbul ignore else */</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>util<span class="token punctuation">.</span>inspect<span class="token punctuation">.</span>custom<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  module<span class="token punctuation">.</span>exports<span class="token punctuation">[</span>util<span class="token punctuation">.</span>inspect<span class="token punctuation">.</span>custom<span class="token punctuation">]</span> <span class="token operator">=</span> module<span class="token punctuation">.</span>exports<span class="token punctuation">.</span>inspect<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>这一部分主要是自定义<code>inspect()</code>方法，没太多可说的。</p> <h2 id="summary"><a href="#summary" class="header-anchor">#</a> Summary</h2> <p><code>context</code>部分的代码很少，主要是起到了代理<code>request</code>, <code>response</code>, <code>cookies</code>等相关方法，在koa的目前版本中方便直接通过<code>ctx</code>进行各种操作。</p> <p>实际上，通过<code>ctx</code>代理<code>request</code>, <code>response</code>的部分方法和变量，虽然使用起来比较方便，但是可能会引起一些语义上的不明确，比如<code>request</code>和<code>response</code>其实都有<code>headers</code>，为什么<code>ctx</code>代理的是<code>request</code>的<code>headers</code>而不是<code>response</code>的<code>headers</code>？</p> <p>在使用过程中有时候确实会搞不清楚<code>ctx</code>下代理的是哪一个，反而不如直接用<code>ctx.response.xxx</code>或者<code>ctx.request.xxx</code>来得更清楚一些，也可以提高代码的可读性。</p> <p>现在koa的仓库里专门有一个issue讨论这个问题，不知道在koa3中会不会有所改变：https://github.com/koajs/koa/issues/849</p> <h2 id="references"><a href="#references" class="header-anchor">#</a> References</h2> <ul><li><a href="https://github.com/koajs/koa/tree/2.5.2" target="_blank" rel="noopener noreferrer">koajs/koa v2.5.2<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul> <h2 id="related-posts"><a href="#related-posts" class="header-anchor">#</a> Related posts</h2> <blockquote><p>Koa源码阅读：<br> <a href="/posts/2018/08/15/koa-core-read-source-code-part-1.html">Koa Core - 源码阅读 1 - Application</a><br> <a href="/posts/2018/11/06/koa-core-read-source-code-part-3.html">Koa Core - 源码阅读 3 - Request &amp; Response</a></p></blockquote></div></article> <section class="post-meta main-div" data-v-4e23451f><section class="post-date clearfix" data-v-4e23451f><span class="create-date" data-v-4e23451f>
+      发布时间 : 2018-09-26
+    </span> <!----></section> <section class="post-links" data-v-4e23451f><a href="/posts/2018/09/25/node-event-loop.html" class="post-link" data-v-4e23451f>
+      上一篇 : Event Loop in Node.js - Node 事件循环
+    </a> <a href="/posts/2018/11/06/koa-core-read-source-code-part-3.html" class="post-link" data-v-4e23451f>
+      下一篇 : Koa Core - 源码阅读 3 - Request &amp; Response
+    </a></section></section> <div id="post-comments" class="main-div"><!----></div></div></main> <aside class="aside" data-v-6e91a59a><div class="info-card main-div" data-v-23d90c50 data-v-6e91a59a><div class="info-card-header" data-v-23d90c50><img src="/assets/img/avatar.jpg" alt="meteorlxy" class="info-avatar" data-v-23d90c50></div> <div class="info-card-body" data-v-23d90c50><section class="info-nickname" data-v-23d90c50>
+      meteorlxy
+    </section> <section class="info-desc" data-v-23d90c50>Happy Coding<br/>Happy Life</section> <section class="info-contact" data-v-23d90c50><section data-v-23d90c50><span title="Shenzhen, China" data-v-23d90c50 data-v-23d90c50><svg class="icon" style="font-size:1em;" data-v-23d90c50 data-v-23d90c50><title data-v-23d90c50 data-v-23d90c50>Shenzhen, China</title><use xlink:href="#icon-location" data-v-23d90c50 data-v-23d90c50></use></svg><span class="info-text" data-v-23d90c50 data-v-23d90c50>
+          Shenzhen, China
+        </span></span></section> <section data-v-23d90c50><span title="Tencent" data-v-23d90c50 data-v-23d90c50><svg class="icon" style="font-size:1em;" data-v-23d90c50 data-v-23d90c50><title data-v-23d90c50 data-v-23d90c50>Tencent</title><use xlink:href="#icon-organization" data-v-23d90c50 data-v-23d90c50></use></svg><span class="info-text" data-v-23d90c50 data-v-23d90c50>
+          Tencent
+        </span></span></section> <section data-v-23d90c50><a href="mailto:meteor.lxy@foxmail.com" title="meteor.lxy@foxmail.com" data-v-23d90c50 data-v-23d90c50><svg class="icon" style="font-size:1em;" data-v-23d90c50 data-v-23d90c50><title data-v-23d90c50 data-v-23d90c50>meteor.lxy@foxmail.com</title><use xlink:href="#icon-email" data-v-23d90c50 data-v-23d90c50></use></svg><span class="info-text" data-v-23d90c50 data-v-23d90c50>
+          meteor.lxy@foxmail.com
+        </span></a></section></section></div> <div class="info-card-footer" data-v-23d90c50><section class="info-sns clearfix" data-v-23d90c50><a href="https://github.com/meteorlxy" target="_blank" class="sns-link" data-v-23d90c50><span title="GitHub: meteorlxy" class="sns-icon" data-v-23d90c50 data-v-23d90c50><svg class="icon" style="font-size:1.5em;" data-v-23d90c50 data-v-23d90c50><title data-v-23d90c50 data-v-23d90c50>GitHub: meteorlxy</title><use xlink:href="#icon-github" data-v-23d90c50 data-v-23d90c50></use></svg></span></a><a href="https://www.facebook.com/meteorlxy.cn" target="_blank" class="sns-link" data-v-23d90c50><span title="Facebook: meteorlxy.cn" class="sns-icon" data-v-23d90c50 data-v-23d90c50><svg class="icon" style="font-size:1.5em;" data-v-23d90c50 data-v-23d90c50><title data-v-23d90c50 data-v-23d90c50>Facebook: meteorlxy.cn</title><use xlink:href="#icon-facebook" data-v-23d90c50 data-v-23d90c50></use></svg></span></a><a href="http://www.linkedin.com/in/meteorlxy" target="_blank" class="sns-link" data-v-23d90c50><span title="LinkedIn: meteorlxy" class="sns-icon" data-v-23d90c50 data-v-23d90c50><svg class="icon" style="font-size:1.5em;" data-v-23d90c50 data-v-23d90c50><title data-v-23d90c50 data-v-23d90c50>LinkedIn: meteorlxy</title><use xlink:href="#icon-linkedin" data-v-23d90c50 data-v-23d90c50></use></svg></span></a><a href="https://twitter.com/meteorlxy_cn" target="_blank" class="sns-link" data-v-23d90c50><span title="Twitter: meteorlxy_cn" class="sns-icon" data-v-23d90c50 data-v-23d90c50><svg class="icon" style="font-size:1.5em;" data-v-23d90c50 data-v-23d90c50><title data-v-23d90c50 data-v-23d90c50>Twitter: meteorlxy_cn</title><use xlink:href="#icon-twitter" data-v-23d90c50 data-v-23d90c50></use></svg></span></a><a href="https://weibo.com/u/2039655434" target="_blank" class="sns-link" data-v-23d90c50><span title="新浪微博: @焦炭君_Meteor" class="sns-icon" data-v-23d90c50 data-v-23d90c50><svg class="icon" style="font-size:1.5em;" data-v-23d90c50 data-v-23d90c50><title data-v-23d90c50 data-v-23d90c50>新浪微博: @焦炭君_Meteor</title><use xlink:href="#icon-weibo" data-v-23d90c50 data-v-23d90c50></use></svg></span></a><a href="https://www.zhihu.com/people/meteorlxy.cn" target="_blank" class="sns-link" data-v-23d90c50><span title="知乎: meteorlxy.cn" class="sns-icon" data-v-23d90c50 data-v-23d90c50><svg class="icon" style="font-size:1.5em;" data-v-23d90c50 data-v-23d90c50><title data-v-23d90c50 data-v-23d90c50>知乎: meteorlxy.cn</title><use xlink:href="#icon-zhihu" data-v-23d90c50 data-v-23d90c50></use></svg></span></a><a href="https://www.douban.com/people/159342708" target="_blank" class="sns-link" data-v-23d90c50><span title="豆瓣: 159342708" class="sns-icon" data-v-23d90c50 data-v-23d90c50><svg class="icon" style="font-size:1.5em;" data-v-23d90c50 data-v-23d90c50><title data-v-23d90c50 data-v-23d90c50>豆瓣: 159342708</title><use xlink:href="#icon-douban" data-v-23d90c50 data-v-23d90c50></use></svg></span></a></section></div></div> <div class="post-nav-card main-div" style="position:relative;top:0;width:0px;" data-v-6e91a59a><div class="post-nav-contents"><svg class="icon"><title>book</title><use xlink:href="#icon-book"></use></svg> <span>文章目录</span> <div class="post-nav-toc"><ul><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#context">Context</a><ul><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#delegation">Delegation</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#assert-throw">assert(), throw()</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#onerror">onerror()</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#cookies">cookies()</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#inspect-tojson">inspect(), toJSON()</a></li></ul></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#summary">Summary</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#references">References</a></li><li><a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#related-posts">Related posts</a></li></ul></div></div> <div class="post-nav-comments"><svg class="icon"><title>comment</title><use xlink:href="#icon-comment"></use></svg> <a href="/posts/2018/09/26/koa-core-read-source-code-part-2.html#post-comments">
+      评论
+    </a></div></div></aside></div> <footer class="footer" data-v-f018ab8c><p class="footer-sns-links" data-v-f018ab8c><a href="https://github.com/meteorlxy" target="_blank" class="sns-link" data-v-f018ab8c><span title="GitHub: meteorlxy" class="sns-icon" data-v-f018ab8c data-v-f018ab8c><svg class="icon" style="font-size:25px;" data-v-f018ab8c data-v-f018ab8c><title data-v-f018ab8c data-v-f018ab8c>GitHub: meteorlxy</title><use xlink:href="#icon-github" data-v-f018ab8c data-v-f018ab8c></use></svg></span></a><a href="https://www.facebook.com/meteorlxy.cn" target="_blank" class="sns-link" data-v-f018ab8c><span title="Facebook: meteorlxy.cn" class="sns-icon" data-v-f018ab8c data-v-f018ab8c><svg class="icon" style="font-size:25px;" data-v-f018ab8c data-v-f018ab8c><title data-v-f018ab8c data-v-f018ab8c>Facebook: meteorlxy.cn</title><use xlink:href="#icon-facebook" data-v-f018ab8c data-v-f018ab8c></use></svg></span></a><a href="http://www.linkedin.com/in/meteorlxy" target="_blank" class="sns-link" data-v-f018ab8c><span title="LinkedIn: meteorlxy" class="sns-icon" data-v-f018ab8c data-v-f018ab8c><svg class="icon" style="font-size:25px;" data-v-f018ab8c data-v-f018ab8c><title data-v-f018ab8c data-v-f018ab8c>LinkedIn: meteorlxy</title><use xlink:href="#icon-linkedin" data-v-f018ab8c data-v-f018ab8c></use></svg></span></a><a href="https://twitter.com/meteorlxy_cn" target="_blank" class="sns-link" data-v-f018ab8c><span title="Twitter: meteorlxy_cn" class="sns-icon" data-v-f018ab8c data-v-f018ab8c><svg class="icon" style="font-size:25px;" data-v-f018ab8c data-v-f018ab8c><title data-v-f018ab8c data-v-f018ab8c>Twitter: meteorlxy_cn</title><use xlink:href="#icon-twitter" data-v-f018ab8c data-v-f018ab8c></use></svg></span></a><a href="https://weibo.com/u/2039655434" target="_blank" class="sns-link" data-v-f018ab8c><span title="新浪微博: @焦炭君_Meteor" class="sns-icon" data-v-f018ab8c data-v-f018ab8c><svg class="icon" style="font-size:25px;" data-v-f018ab8c data-v-f018ab8c><title data-v-f018ab8c data-v-f018ab8c>新浪微博: @焦炭君_Meteor</title><use xlink:href="#icon-weibo" data-v-f018ab8c data-v-f018ab8c></use></svg></span></a><a href="https://www.zhihu.com/people/meteorlxy.cn" target="_blank" class="sns-link" data-v-f018ab8c><span title="知乎: meteorlxy.cn" class="sns-icon" data-v-f018ab8c data-v-f018ab8c><svg class="icon" style="font-size:25px;" data-v-f018ab8c data-v-f018ab8c><title data-v-f018ab8c data-v-f018ab8c>知乎: meteorlxy.cn</title><use xlink:href="#icon-zhihu" data-v-f018ab8c data-v-f018ab8c></use></svg></span></a><a href="https://www.douban.com/people/159342708" target="_blank" class="sns-link" data-v-f018ab8c><span title="豆瓣: 159342708" class="sns-icon" data-v-f018ab8c data-v-f018ab8c><svg class="icon" style="font-size:25px;" data-v-f018ab8c data-v-f018ab8c><title data-v-f018ab8c data-v-f018ab8c>豆瓣: 159342708</title><use xlink:href="#icon-douban" data-v-f018ab8c data-v-f018ab8c></use></svg></span></a></p> <p class="footer-text" data-v-f018ab8c><span data-v-f018ab8c>Powered by </span> <a href="https://github.com/vuejs/vuepress" target="_blank" data-v-f018ab8c>
+      VuePress
+    </a> <span data-v-f018ab8c> | </span> <a href="https://github.com/meteorlxy/vuepress-theme-meteorlxy" target="_blank" data-v-f018ab8c>
+        meteorlxy
+      </a></p> <!----></footer></div><div class="global-ui"><!----><!----></div></div>
+    <script src="/assets/js/vendor.2.1dac5719.js" defer></script><script src="/assets/js/11.db5e2ccd.js" defer></script><script src="/assets/js/vendor.1.27c1b491.js" defer></script><script src="/assets/js/vendor.0.85f8c959.js" defer></script><script src="/assets/js/app.d3b3b19c.js" defer></script>
+  </body>
+</html>
