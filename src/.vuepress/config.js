@@ -73,6 +73,10 @@ module.exports = {
       { text: 'Posts', link: '/posts/', exact: false  },
       { text: 'Projects', link: '/projects/', exact: false  }, 
     ],
+    
+    footer: {
+      custom: '陕ICP备17001500号-1',
+    },
 
     comments: {
       platform: 'github',
